@@ -42,5 +42,3 @@ data		| red 	| red
 gnd	| black 		| black
 gnd		| white 	| yellow
 gnd	| green 		| blue 
-
-(some extension cables have 2 ground wires instead of 3)
