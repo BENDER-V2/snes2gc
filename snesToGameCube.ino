@@ -56,7 +56,7 @@ int lastVal = 0;
 int buttons[12];
 
 int GC_DATA_PIN = 2;
-//This makes the controller bidirection data line on pin number8
+//This makes the controller bidirection data line on digital pin 2 (d2)
 CGamecubeConsole GamecubeConsole(GC_DATA_PIN);      //Defines a "Gamecube Console" sending data to the console on pin 8
 Gamecube_Data_t d = defaultGamecubeData;   //Structure for data to be sent to console
 
