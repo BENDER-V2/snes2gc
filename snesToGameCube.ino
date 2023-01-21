@@ -31,7 +31,7 @@ gnd   | green   | blue (some extension cables have 2 ground wires instead of 3)
 */
 int R_analog;
 int L_analog;
-//SNES button mapping
+// SNES button mapping
 const int BUTTON_A = 8;
 const int BUTTON_B = 0;
 const int BUTTON_X = 9;
@@ -45,25 +45,26 @@ const int DPAD_DOWN = 5;
 const int DPAD_LEFT = 6;
 const int DPAD_RIGHT = 7;
 
-//SNES pins
+// SNES pins
 const int SNES_DATA_SERIAL_PIN = 3;
 const int SNES_DATA_CLOCK_PIN = 4;
 const int SNES_DATA_LATCH_PIN = 5;
 
 int lastVal = 0;
 
-//Array holding SNES buttons states
+// Array holding SNES buttons states
 int buttons[12];
 
 int GC_DATA_PIN = 2;
-//This makes the controller bidirection data line on digital pin 2 (d2)
-CGamecubeConsole GamecubeConsole(GC_DATA_PIN);      //Defines a "Gamecube Console" sending data to the console on pin 8
-Gamecube_Data_t d = defaultGamecubeData;   //Structure for data to be sent to console
+// This makes the controller bidirection data line on digital pin 2 (d2)
+CGamecubeConsole GamecubeConsole(GC_DATA_PIN); // Defines a "Gamecube Console" sending data to the console on pin 8
+Gamecube_Data_t d = defaultGamecubeData;       // Structure for data to be sent to console
 
-//This is needed but you don't need a controller on pin 7
+// This is needed but you don't need a controller on pin 7
 CGamecubeController GamecubeController1(7);
 
-void setup(){
+void setup()
+{
   // Set SNES_DATA_CLOCK_PIN normally HIGH
   pinMode(SNES_DATA_CLOCK_PIN, OUTPUT);
   digitalWrite(SNES_DATA_CLOCK_PIN, HIGH);
@@ -77,16 +78,18 @@ void setup(){
   digitalWrite(SNES_DATA_SERIAL_PIN, HIGH);
   pinMode(SNES_DATA_SERIAL_PIN, INPUT);
 
-   //This is needed to run the code.
+  // This is needed to run the code.
   GamecubeController1.read();
 }
 
-void loop() {
+void loop()
+{
   readSNES();
   writeGC();
 }
 
-void readSNES() {
+void readSNES()
+{
   // Latch for 12us
   digitalWrite(SNES_DATA_LATCH_PIN, HIGH);
   delayMicroseconds(12);
@@ -94,40 +97,41 @@ void readSNES() {
   delayMicroseconds(6);
 
   // Retrieve button presses from shift register by pulling the clock high for 6us
-  for(int i = 0; i < 16; i++){
+  for (int i = 0; i < 16; i++)
+  {
     digitalWrite(SNES_DATA_CLOCK_PIN, LOW);
     delayMicroseconds(6);
-    if(i <= 11){
-        buttons[i] = !digitalRead(SNES_DATA_SERIAL_PIN);
-        
+    if (i <= 11)
+    {
+      buttons[i] = !digitalRead(SNES_DATA_SERIAL_PIN);
     }
     digitalWrite(SNES_DATA_CLOCK_PIN, HIGH);
     delayMicroseconds(6);
-
   }
 }
 
-void writeGC() {
-  //sends the complied data to console when console polls for the input
-  switch (buttons[BUTTON_R]) {
-    
+void writeGC()
+{
+  // sends the complied data to console when console polls for the input
+  switch (buttons[BUTTON_R])
+  {
+
   case 0:
     R_analog = 0;
     break;
   case 1:
     R_analog = 255;
     break;
-
   }
-  switch (buttons[BUTTON_L]) {
-    
+  switch (buttons[BUTTON_L])
+  {
+
   case 0:
     L_analog = 0;
     break;
   case 1:
     L_analog = 255;
     break;
-
   }
   d.report.a = buttons[BUTTON_A];
   d.report.b = buttons[BUTTON_B];
@@ -142,6 +146,6 @@ void writeGC() {
   d.report.dleft = buttons[DPAD_LEFT];
   d.report.dup = buttons[DPAD_UP];
   d.report.dright = buttons[DPAD_RIGHT];
-  d.report.ddown = buttons[DPAD_DOWN]; 
+  d.report.ddown = buttons[DPAD_DOWN];
   GamecubeConsole.write(d);
 }
