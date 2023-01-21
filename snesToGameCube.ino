@@ -20,7 +20,7 @@ latch | orange  | white
 data  | red     | red
 gnd   | brown   | black
 
-====GC PINOUT====
+====GAMECUBE PINOUT====
 TYPE  | ORIGINAL| EXTENSION CABLE
 5v    | yellow  | white
 3.3v  | blue    | green
@@ -31,7 +31,7 @@ gnd   | green   | blue (some extension cables have 2 ground wires instead of 3)
 */
 int R_analog;
 int L_analog;
-// SNES button mapping
+// SNES button mappings
 const int BUTTON_A = 8;
 const int BUTTON_B = 0;
 const int BUTTON_X = 9;
